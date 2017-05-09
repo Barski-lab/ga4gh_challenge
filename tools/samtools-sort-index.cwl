@@ -31,7 +31,7 @@ hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/samtools:v1.4
   dockerFile: >
-    $import: ./dockerfiles/samtools/Dockerfile
+    $import: ../dockerfiles/samtools/Dockerfile
 
 inputs:
 

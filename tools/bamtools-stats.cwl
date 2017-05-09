@@ -12,7 +12,7 @@ hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/bamtools:v2.4.1
   dockerFile: >
-    $import: ./dockerfiles/bamtools/Dockerfile
+    $import: ../dockerfiles/bamtools/Dockerfile
 
 inputs:
 

@@ -57,7 +57,7 @@ hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/macs2:v2.1.1
   dockerFile: >
-    $import: ./dockerfiles/macs2/Dockerfile
+    $import: ../dockerfiles/macs2/Dockerfile
 
 inputs:
 

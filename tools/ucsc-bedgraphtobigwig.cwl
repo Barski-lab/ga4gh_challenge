@@ -11,7 +11,7 @@ hints:
 - class: DockerRequirement
   dockerPull: scidap/ucsc-userapps:v325
   dockerFile: >
-    $import: ./dockerfiles/ucsc_utils/Dockerfile
+    $import: ../dockerfiles/ucsc_utils/Dockerfile
 
 
 inputs:

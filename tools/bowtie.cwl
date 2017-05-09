@@ -29,7 +29,7 @@ hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/bowtie:v1.2.0
   dockerFile: >
-    $import: ./dockerfiles/bowtie/Dockerfile
+    $import: ../dockerfiles/bowtie/Dockerfile
 
 inputs:
 

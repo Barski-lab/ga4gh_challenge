@@ -10,7 +10,7 @@ hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/fastx_toolkit:v0.0.14
   dockerFile: >
-    $import: ./dockerfiles/fastx/Dockerfile
+    $import: ../dockerfiles/fastx/Dockerfile
 
 inputs:
 

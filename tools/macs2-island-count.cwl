@@ -12,7 +12,7 @@ hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/scidap:v0.0.2
   dockerFile: >
-    $import: ./dockerfiles/scidap/Dockerfile
+    $import: ../dockerfiles/scidap/Dockerfile
 
 inputs:
 
