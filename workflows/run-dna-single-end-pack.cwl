@@ -1,5 +1,3 @@
-SPLIT:  SplitResult(scheme='', netloc='', path=u'run-dna-single-end.cwl', query='', fragment='')
-os.path.exists URI:  file:///Users/kot4or/cchmc/ga4gh_challenge/phase_2/ga4gh_challenge/workflows/run-dna-single-end.cwl
 {
     "cwlVersion": "v1.0", 
     "$schemas": [
