@@ -169,13 +169,13 @@ outputs:
 steps:
 
   fastx_quality_stats:
-    run: ../../tools/fastx-quality-stats.cwl
+    run: ../tools/fastx-quality-stats.cwl
     in:
       input_file: fastq_input_file
     out: [statistics]
 
   bowtie_aligner:
-    run: ../../tools/bowtie.cwl
+    run: ../tools/bowtie.cwl
     in:
       filelist: fastq_input_file
       indices_folder: bowtie_indices_folder
@@ -197,14 +197,14 @@ steps:
     out: [output, output_bowtie_log]
 
   samtools_sort_index:
-    run: ../../tools/samtools-sort-index.cwl
+    run: ../tools/samtools-sort-index.cwl
     in:
       sort_input: bowtie_aligner/output
       threads: threads
     out: [bam_bai_pair]
 
   samtools_rmdup:
-    run: ../../tools/samtools-rmdup.cwl
+    run: ../tools/samtools-rmdup.cwl
     in:
       trigger: remove_duplicates
       input_file: samtools_sort_index/bam_bai_pair
@@ -213,7 +213,7 @@ steps:
     out: [rmdup_output, rmdup_log]
 
   samtools_sort_index_after_rmdup:
-    run: ../../tools/samtools-sort-index.cwl
+    run: ../tools/samtools-sort-index.cwl
     in:
       trigger: remove_duplicates
       sort_input: samtools_rmdup/rmdup_output
@@ -221,7 +221,7 @@ steps:
     out: [bam_bai_pair]
 
   macs2_callpeak:
-    run: ../../tools/macs2-callpeak.cwl
+    run: ../tools/macs2-callpeak.cwl
     in:
       treatment: samtools_sort_index_after_rmdup/bam_bai_pair
       control: control_file
@@ -286,13 +286,13 @@ steps:
       - macs_log
 
   macs_island_count:
-    run: ../../tools/macs2-island-count.cwl
+    run: ../tools/macs2-island-count.cwl
     in:
       input_file: macs2_callpeak/peak_xls_file
     out: [fragments, islands]
 
   macs2_callpeak_forced:
-    run: ../../tools/macs2-callpeak.cwl
+    run: ../tools/macs2-callpeak.cwl
     in:
       trigger:
         source: [force_fragment_size, macs_island_count/fragments]
@@ -348,7 +348,7 @@ steps:
       - macs_log
 
   bamtools_stats:
-    run: ../../tools/bamtools-stats.cwl
+    run: ../tools/bamtools-stats.cwl
     in:
       input_files: samtools_sort_index_after_rmdup/bam_bai_pair
     out: [mappedreads]
@@ -362,7 +362,7 @@ steps:
     out: [outfile]
 
   get_stat:
-      run: ../../tools/python-get-stat.cwl
+      run: ../tools/python-get-stat.cwl
       in:
         bowtie_log: bowtie_aligner/output_bowtie_log
         rmdup_log: samtools_rmdup/rmdup_log
