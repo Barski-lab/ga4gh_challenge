@@ -15,8 +15,8 @@
                             "envValue": "/usr/local/bin/:/usr/bin:/bin"
                         }
                     ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "id": "#envvar-global.yml", 
+                    "name": "#envvar-global.yml"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -197,8 +197,8 @@
                         "http://schema.org/name": "Pacific Biosciences"
                     }
                 ], 
-                "name": "#bamtools-metadata.yaml", 
                 "id": "#bamtools-metadata.yaml", 
+                "name": "#bamtools-metadata.yaml", 
                 "http://schema.org/name": "bowtie2", 
                 "http://schema.org/url": "https://github.com/pezmaster31/bamtools/wiki", 
                 "http://schema.org/license": [
@@ -259,15 +259,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -518,8 +510,8 @@
                         "http://schema.org/name": "University of Utah"
                     }
                 ], 
-                "name": "#bedtools-metadata.yaml", 
                 "id": "#bedtools-metadata.yaml", 
+                "name": "#bedtools-metadata.yaml", 
                 "http://schema.org/name": "bowtie2", 
                 "http://schema.org/url": "http://bedtools.readthedocs.org", 
                 "http://schema.org/license": [
@@ -581,15 +573,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "ShellCommandRequirement"
@@ -1527,8 +1511,8 @@
                         "http://schema.org/name": "Johns Hopkins University"
                     }
                 ], 
-                "name": "#bowtie-metadata.yaml", 
                 "id": "#bowtie-metadata.yaml", 
+                "name": "#bowtie-metadata.yaml", 
                 "http://schema.org/name": "bowtie2", 
                 "http://schema.org/url": "http://bowtie-bio.sourceforge.net/index.shtml", 
                 "http://schema.org/license": [
@@ -1568,7 +1552,7 @@
                                             "http://schema.org/name": "Andrey Kartashov", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0001-9102-5681"
+                                                    "$import": "#0000-0001-9102-5681"
                                                 }
                                             ]
                                         }
@@ -1589,15 +1573,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -1674,8 +1650,8 @@
                 "s:discussionUrl": [
                     "https://github.com/agordon/fastx_toolkit/issues"
                 ], 
-                "name": "#fastx-toolkit-metadata.yaml", 
                 "id": "#fastx-toolkit-metadata.yaml", 
+                "name": "#fastx-toolkit-metadata.yaml", 
                 "http://schema.org/name": "fastx-toolkit", 
                 "http://schema.org/url": "http://hannonlab.cshl.edu/fastx_toolkit/index.html", 
                 "http://schema.org/license": [
@@ -1725,7 +1701,7 @@
                                             "http://schema.org/name": "Michael Kotliar", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0002-6486-3898"
+                                                    "$import": "#0000-0002-6486-3898"
                                                 }
                                             ]
                                         }
@@ -1746,15 +1722,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement", 
@@ -1835,7 +1803,7 @@
                                             "http://schema.org/name": "Andrey Kartashov", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0001-9102-5681"
+                                                    "$import": "#0000-0001-9102-5681"
                                                 }
                                             ]
                                         }
@@ -1864,15 +1832,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "ShellCommandRequirement"
@@ -2573,8 +2533,8 @@
                         "http://schema.org/name": "Xiaole Shirley Liu's Lab"
                     }
                 ], 
-                "name": "#macs2-metadata.yaml", 
                 "id": "#macs2-metadata.yaml", 
+                "name": "#macs2-metadata.yaml", 
                 "http://schema.org/name": "MACS2", 
                 "http://schema.org/url": "http://liulab.dfci.harvard.edu/MACS/", 
                 "http://schema.org/license": [
@@ -2615,7 +2575,7 @@
                                             "http://schema.org/name": "Michael Kotliar", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0002-6486-3898"
+                                                    "$import": "#0000-0002-6486-3898"
                                                 }
                                             ]
                                         }
@@ -2636,15 +2596,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "InlineJavascriptRequirement"
@@ -2723,99 +2675,7 @@
             "doc": "Tool is used to return an estimated fragment size and islands count from\nxls file generated by MACS2 callpeak\n", 
             "id": "#macs2-island-count.cwl", 
             "http://schema.org/mainEntity": {
-                "class": "http://schema.org/SoftwareSourceCode", 
-                "s:about": "With the improvement of sequencing techniques, chromatin immunoprecipitation followed by high throughput sequencing (ChIP-Seq) is getting popular to study genome-wide protein-DNA interactions. To address the lack of powerful ChIP-Seq analysis method, we present a novel algorithm, named Model-based Analysis of ChIP-Seq (MACS), for identifying transcript factor binding sites. MACS captures the influence of genome complexity to evaluate the significance of enriched ChIP regions, and MACS improves the spatial resolution of binding sites through combining the information of both sequencing tag position and orientation. MACS can be easily used for ChIP-Seq data alone, or with control sample with the increase of specificity.\n", 
-                "s:codeRepository": "https://github.com/taoliu/MACS", 
-                "s:targetProduct": {
-                    "class": "http://schema.org/SoftwareApplication", 
-                    "s:applicationCategory": "command line tool", 
-                    "http://schema.org/softwareVersion": "2.1.1.20160309"
-                }, 
-                "s:publication": [
-                    {
-                        "class": "http://schema.org/ScholarlyArticle", 
-                        "id": "#macs2-metadata.yaml/10.1186/gb-2008-9-9-r137", 
-                        "s:author": [
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Zhang Y"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Liu T"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Meyer CA"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Eeckhoute J"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Johnson DS"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Bernstein BE"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Nusbaum C"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Myers RM"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Brown M"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Li W"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "http://schema.org/name": "Liu XS"
-                            }
-                        ], 
-                        "datePublished": "17 September 2008", 
-                        "http://schema.org/name": "Model-based analysis of ChIP-Seq (MACS)", 
-                        "http://schema.org/url": "https://genomebiology.biomedcentral.com/articles/10.1186/gb-2008-9-9-r137"
-                    }
-                ], 
-                "s:creator": [
-                    {
-                        "class": "http://schema.org/Organization", 
-                        "s:member": [
-                            {
-                                "class": "http://schema.org/Person", 
-                                "s:description": "Main author", 
-                                "http://schema.org/name": "Yong Zhang"
-                            }, 
-                            {
-                                "class": "http://schema.org/Person", 
-                                "s:description": "Main author", 
-                                "http://schema.org/name": "Tao Liu"
-                            }
-                        ], 
-                        "http://schema.org/name": "Xiaole Shirley Liu's Lab"
-                    }
-                ], 
-                "name": "#macs2-metadata.yaml", 
-                "id": "#macs2-metadata.yaml", 
-                "http://schema.org/name": "MACS2", 
-                "http://schema.org/url": "http://liulab.dfci.harvard.edu/MACS/", 
-                "http://schema.org/license": [
-                    "https://opensource.org/licenses/BSD-3-Clause"
-                ], 
-                "http://schema.org/programmingLanguage": "Python", 
-                "http://schema.org/discussionUrl": [
-                    "https://groups.google.com/forum/#!forum/macs-announcement", 
-                    "https://github.com/taoliu/MACS/issues"
-                ]
+                "$import": "#macs2-metadata.yaml"
             }, 
             "http://schema.org/downloadUrl": "https://raw.githubusercontent.com/SciDAP/workflows/master/tools/macs2-island-count.cwl", 
             "http://schema.org/license": "http://www.apache.org/licenses/LICENSE-2.0", 
@@ -2846,7 +2706,7 @@
                                             "http://schema.org/name": "Michael Kotliar", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0002-6486-3898"
+                                                    "$import": "#0000-0002-6486-3898"
                                                 }
                                             ]
                                         }
@@ -2867,15 +2727,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "ShellCommandRequirement"
@@ -2973,7 +2825,7 @@
                                             "http://schema.org/name": "Michael Kotliar", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0002-6486-3898"
+                                                    "$import": "#0000-0002-6486-3898"
                                                 }
                                             ]
                                         }
@@ -3003,15 +2855,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "ShellCommandRequirement"
@@ -3219,8 +3063,8 @@
                         "http://schema.org/name": "Petr Danecek"
                     }
                 ], 
-                "name": "#samtools-metadata.yaml", 
                 "id": "#samtools-metadata.yaml", 
+                "name": "#samtools-metadata.yaml", 
                 "http://schema.org/name": "samtools", 
                 "http://schema.org/url": "http://www.htslib.org/", 
                 "http://schema.org/license": [
@@ -3262,7 +3106,7 @@
                                             "http://schema.org/name": "Michael Kotliar", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0002-6486-3898"
+                                                    "$import": "#0000-0002-6486-3898"
                                                 }
                                             ]
                                         }
@@ -3283,15 +3127,7 @@
             "class": "CommandLineTool", 
             "requirements": [
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }, 
                 {
                     "class": "ShellCommandRequirement"
@@ -3509,92 +3345,7 @@
             "doc": "This tool is used to sort and index input BAM/SAM file by means of samtools sort/index\nInput Trigger (default: true) allows to skip all calculation and return\nall input files unchanged. To set files to be returned in case of Trigger == false,\nuse the following inputs:\n  sort_input\n", 
             "id": "#samtools-sort-index.cwl", 
             "http://schema.org/mainEntity": {
-                "class": "http://schema.org/SoftwareSourceCode", 
-                "s:about": "A suite of programs for interacting with high-throughput sequencing data. It consists of three separate repositories: Samtools (Reading/writing/editing/indexing/viewing SAM/BAM/CRAM format), BCFtools (Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants) and HTSlib (A C library for reading/writing high-throughput sequencing data).\n", 
-                "s:codeRepository": "https://github.com/samtools/samtools.git", 
-                "s:targetProduct": {
-                    "class": "http://schema.org/SoftwareApplication", 
-                    "s:applicationCategory": "commandline tool", 
-                    "http://schema.org/softwareVersion": "1.4"
-                }, 
-                "s:publication": [
-                    {
-                        "class": "http://schema.org/ScholarlyArticle", 
-                        "id": "#btr509", 
-                        "s:url": "http://www.ncbi.nlm.nih.gov/pubmed/21903627", 
-                        "http://schema.org/name": "(Li, 2011) A statistical framework for SNP calling, mutation discovery, association mapping and population genetical parameter estimation from sequencing data. Bioinformatics."
-                    }, 
-                    {
-                        "class": "http://schema.org/ScholarlyArticle", 
-                        "id": "#btr076", 
-                        "s:url": "http://www.ncbi.nlm.nih.gov/pubmed/21320865", 
-                        "http://schema.org/name": "(Li, 2011) Improving SNP discovery by base alignment quality. Bioinformatics."
-                    }, 
-                    {
-                        "class": "http://schema.org/ScholarlyArticle", 
-                        "id": "#btp352", 
-                        "s:url": "http://www.ncbi.nlm.nih.gov/pubmed/19505943", 
-                        "http://schema.org/name": "(Li et al., 2009) The Sequence Alignment/Map format and SAMtools. Bioinformatics."
-                    }
-                ], 
-                "s:creator": [
-                    {
-                        "class": "http://schema.org/Organization", 
-                        "s:member": [
-                            {
-                                "class": "http://schema.org/Person", 
-                                "s:description": "wrote most of the initial source codes of SAMtools and various converters.", 
-                                "http://schema.org/name": "Heng Li"
-                            }
-                        ], 
-                        "http://schema.org/name": "Sanger Institute"
-                    }, 
-                    {
-                        "class": "http://schema.org/Organization", 
-                        "s:member": [
-                            {
-                                "class": "http://schema.org/Person", 
-                                "s:description": "A major contributor to the\nSAM/BAM specification. He designed and implemented the BGZF format, the\nunderlying indexable compression format for the BAM format. BGZF does\nnot support arithmetic between file offsets.\n", 
-                                "http://schema.org/name": "Bob Handsaker"
-                            }
-                        ], 
-                        "http://schema.org/name": "Broad Institute"
-                    }, 
-                    {
-                        "class": "http://schema.org/Organization", 
-                        "s:member": [
-                            {
-                                "class": "http://schema.org/Person", 
-                                "s:description": "Designed and implemented the\nRAZF format, an alternative indexable compression format. RAZF is no longer\nused by or provided with SAMtools. Source code remains available in older\nSAMtools 0.1.x releases and from the standalone branch in the repository.\n", 
-                                "http://schema.org/name": "Jue Ruan"
-                            }
-                        ], 
-                        "http://schema.org/name": "Beijing Genome Institute"
-                    }, 
-                    {
-                        "class": "http://schema.org/Person", 
-                        "s:description": "updated novo2sam.pl to support gapped alignment by novoalign.", 
-                        "http://schema.org/name": "Colin Hercus"
-                    }, 
-                    {
-                        "class": "http://schema.org/Person", 
-                        "s:description": "contributed the header parsing library sam_header.c and sam2vcf.pl script.", 
-                        "http://schema.org/name": "Petr Danecek"
-                    }
-                ], 
-                "name": "#samtools-metadata.yaml", 
-                "id": "#samtools-metadata.yaml", 
-                "http://schema.org/name": "samtools", 
-                "http://schema.org/url": "http://www.htslib.org/", 
-                "http://schema.org/license": [
-                    "https://opensource.org/licenses/MIT", 
-                    "https://opensource.org/licenses/BSD-3-Clause"
-                ], 
-                "http://schema.org/programmingLanguage": "C, Perl", 
-                "http://schema.org/discussionUrl": [
-                    "https://lists.sourceforge.net/lists/listinfo/samtools-help", 
-                    "https://lists.sourceforge.net/lists/listinfo/samtools-devel"
-                ]
+                "$import": "#samtools-metadata.yaml"
             }, 
             "http://schema.org/downloadUrl": "https://raw.githubusercontent.com/SciDAP/workflows/master/tools/samtools-sort-index.cwl", 
             "http://schema.org/license": "http://www.apache.org/licenses/LICENSE-2.0", 
@@ -3625,7 +3376,7 @@
                                             "http://schema.org/name": "Michael Kotliar", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0002-6486-3898"
+                                                    "$import": "#0000-0002-6486-3898"
                                                 }
                                             ]
                                         }
@@ -3649,15 +3400,7 @@
                     "class": "InlineJavascriptRequirement"
                 }, 
                 {
-                    "class": "EnvVarRequirement", 
-                    "envDef": [
-                        {
-                            "envName": "PATH", 
-                            "envValue": "/usr/local/bin/:/usr/bin:/bin"
-                        }
-                    ], 
-                    "name": "#envvar-global.yml", 
-                    "id": "#envvar-global.yml"
+                    "$import": "#envvar-global.yml"
                 }
             ], 
             "hints": [
@@ -3766,8 +3509,8 @@
                 "s:license": [
                     "https://opensource.org/licenses/GPL-3.0"
                 ], 
-                "name": "#ucsc-metadata.yaml", 
                 "id": "#ucsc-metadata.yaml", 
+                "name": "#ucsc-metadata.yaml", 
                 "http://schema.org/name": "UCSC userApps", 
                 "http://schema.org/url": "https://genome.ucsc.edu/util.html", 
                 "http://schema.org/programmingLanguage": "C++"
@@ -3801,7 +3544,7 @@
                                             "http://schema.org/name": "Andrey Kartashov", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0001-9102-5681"
+                                                    "$import": "#0000-0001-9102-5681"
                                                 }
                                             ]
                                         }
@@ -4649,7 +4392,7 @@
                                             "http://schema.org/name": "Michael Kotliar", 
                                             "http://schema.org/sameAs": [
                                                 {
-                                                    "id": "#0000-0002-6486-3898"
+                                                    "$import": "#0000-0002-6486-3898"
                                                 }
                                             ]
                                         }
