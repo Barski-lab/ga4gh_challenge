@@ -11,8 +11,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/bamtools:v2.4.1
-  dockerFile: >
-    $import: ../dockerfiles/bamtools/Dockerfile
 
 inputs:
 
@@ -140,8 +138,8 @@ s:mainEntity:
   $import: ./metadata/bamtools-metadata.yaml
 
 s:name: "bamtools-stats"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/bamtools-stats.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/bamtools-stats.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

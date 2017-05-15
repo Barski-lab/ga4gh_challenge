@@ -15,8 +15,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/scidap:v0.0.2
-  dockerFile: >
-    $import: ../dockerfiles/scidap/Dockerfile
 
 inputs:
 
@@ -81,8 +79,8 @@ $schemas:
 - http://schema.org/docs/schema_org_rdfa.html
 
 s:name: "python-get-stat"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/python-get-stat.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/python-get-stat.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

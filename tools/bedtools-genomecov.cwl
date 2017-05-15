@@ -9,8 +9,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/bedtools2:v2.26.0
-  dockerFile: >
-    $import: ../dockerfiles/bedtools/Dockerfile
 
 inputs:
   input:
@@ -190,8 +188,8 @@ s:mainEntity:
   $import: ./metadata/bedtools-metadata.yaml
 
 s:name: "bedtools-genomecov"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/bedtools-genomecov.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/bedtools-genomecov.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

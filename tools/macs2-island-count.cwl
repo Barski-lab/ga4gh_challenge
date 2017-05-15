@@ -11,8 +11,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/scidap:v0.0.2
-  dockerFile: >
-    $import: ../dockerfiles/scidap/Dockerfile
 
 inputs:
 
@@ -77,8 +75,8 @@ s:mainEntity:
   $import: ./metadata/macs2-metadata.yaml
 
 s:name: "macs2-island-count"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/macs2-island-count.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/macs2-island-count.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

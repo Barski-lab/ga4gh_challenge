@@ -9,8 +9,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/fastx_toolkit:v0.0.14
-  dockerFile: >
-    $import: ../dockerfiles/fastx/Dockerfile
 
 inputs:
 
@@ -69,8 +67,8 @@ s:mainEntity:
   $import: ./metadata/fastx-toolkit-metadata.yaml
 
 s:name: "fastx-quality-stats"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/fastx-quality-stats.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/fastx-quality-stats.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

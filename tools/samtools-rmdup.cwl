@@ -22,8 +22,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/samtools:v1.4
-  dockerFile: >
-    $import: ../dockerfiles/samtools/Dockerfile
 
 inputs:
 
@@ -155,8 +153,8 @@ s:mainEntity:
   $import: ./metadata/samtools-metadata.yaml
 
 s:name: "samtools-rmdup"
-s:downloadUrl: https://github.com/SciDAP/workflows/blob/master/tools/samtools-rmdup.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/samtools-rmdup.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

@@ -28,8 +28,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/bowtie:v1.2.0
-  dockerFile: >
-    $import: ../dockerfiles/bowtie/Dockerfile
 
 inputs:
 
@@ -728,8 +726,8 @@ s:mainEntity:
   $import: ./metadata/bowtie-metadata.yaml
 
 s:name: "bowtie"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/bowtie.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/bowtie.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

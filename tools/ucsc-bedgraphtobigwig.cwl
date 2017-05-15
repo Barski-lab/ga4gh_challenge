@@ -10,9 +10,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: scidap/ucsc-userapps:v325
-  dockerFile: >
-    $import: ../dockerfiles/ucsc_utils/Dockerfile
-
 
 inputs:
   input:
@@ -89,8 +86,8 @@ s:mainEntity:
   $import: ./metadata/ucsc-metadata.yaml
 
 s:name: "ucsc-bedgraphtobigwig"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/ucsc-bedgraphtobigwig.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/ucsc-bedgraphtobigwig.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

@@ -30,8 +30,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/samtools:v1.4
-  dockerFile: >
-    $import: ../dockerfiles/samtools/Dockerfile
 
 inputs:
 
@@ -224,8 +222,8 @@ s:mainEntity:
   $import: ./metadata/samtools-metadata.yaml
 
 s:name: "samtools-sort-index"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/samtools-sort-index.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/samtools-sort-index.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

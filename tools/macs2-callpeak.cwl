@@ -56,8 +56,6 @@ requirements:
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/macs2:v2.1.1
-  dockerFile: >
-    $import: ../dockerfiles/macs2/Dockerfile
 
 inputs:
 
@@ -711,8 +709,8 @@ s:mainEntity:
   $import: ./metadata/macs2-metadata.yaml
 
 s:name: "macs2-callpeak"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/macs2-callpeak.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/macs2-callpeak.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

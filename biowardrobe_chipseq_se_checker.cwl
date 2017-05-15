@@ -4,15 +4,13 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 requirements:
-- $import: ./metadata/envvar-global.yml
+- $import: ./tools/metadata/envvar-global.yml
 - class: ShellCommandRequirement
 - class: InlineJavascriptRequirement
 
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/samtools:v1.4
-  dockerFile: >
-    $import: ../dockerfiles/samtools/Dockerfile
 
 inputs:
 
@@ -167,9 +165,9 @@ $namespaces:
 $schemas:
 - http://schema.org/docs/schema_org_rdfa.html
 
-s:name: "run-dna-single-end-validate"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/workflows/scidap/run-dna-single-end-validate.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:name: "biowardrobe_chipseq_se_checker"
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/biowardrobe_chipseq_se_checker.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:

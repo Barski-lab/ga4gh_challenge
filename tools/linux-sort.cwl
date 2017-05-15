@@ -50,8 +50,8 @@ $schemas:
 - http://schema.org/docs/schema_org_rdfa.html
 
 s:name: "linux-sort"
-s:downloadUrl: https://raw.githubusercontent.com/SciDAP/workflows/master/tools/linux-sort.cwl
-s:codeRepository: https://github.com/SciDAP/workflows
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/linux-sort.cwl
+s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:
