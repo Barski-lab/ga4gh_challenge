@@ -1,0 +1,20 @@
+{
+  "config_file": {
+    "class": "File",
+    "path": ".synapseConfig"
+  },
+  "team_name": "",
+  "eval_id": "",
+  "file": [
+    {"class": "File", "path": "SRR1198790.fastq.fastxstat"},
+    {"class": "File", "path": "SRR1198790.sam.log"},
+    {"class": "File", "path": "SRR1198790.sam.stat"},
+    {"class": "File", "path": "SRR1198790.sorted.bam"},
+    {"class": "File", "path": "SRR1198790.sorted.bam.bai"},
+    {"class": "File", "path": "SRR1198790.sorted.sorted.bigwig"},
+    {"class": "File", "path": "SRR1198790.sorted_peaks.narrowPeak"},
+    {"class": "File", "path": "SRR1198790.sorted_peaks.xls"},
+    {"class": "File", "path": "SRR1198790.sorted_summits.bed"}
+  ],
+  "parent_id": ""
+}
