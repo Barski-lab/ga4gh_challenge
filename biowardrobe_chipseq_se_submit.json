@@ -12,9 +12,7 @@
     {"class": "File", "path": "SRR1198790.sorted.bam"},
     {"class": "File", "path": "SRR1198790.sorted.bam.bai"},
     {"class": "File", "path": "SRR1198790.sorted.sorted.bigwig"},
-    {"class": "File", "path": "SRR1198790.sorted_peaks.narrowPeak"},
-    {"class": "File", "path": "SRR1198790.sorted_peaks.xls"},
-    {"class": "File", "path": "SRR1198790.sorted_summits.bed"}
+    {"class": "File", "path": "SRR1198790.sorted_peaks.xls"}
   ],
   "parent_id": ""
 }

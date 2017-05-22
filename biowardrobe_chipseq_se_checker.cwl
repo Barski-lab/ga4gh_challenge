@@ -24,16 +24,32 @@ inputs:
       import magic
       import json
       import uuid
+      import re
 
       def set_fail (conf_data, key):
           for step_name, value in conf_data['steps'].iteritems():
               if key in value[1]:
                   value[0] = "false"
 
+      def eval_macs2_results(check_item):
+          with open(check_item, 'r') as check:
+              command_check = re.findall('.*Command line: callpeak.*', check.read())
+              if not (command_check and re.search('.*-f\s+BAM.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*-g\s+1.2e8.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*--keep-dup\s+auto.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*--buffer-size\s+10000.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*-m\s+4\s+40.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*--nomodel.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*--extsize\s+150.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*-q\s+0.05.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*--nolambda.*',command_check[0],re.IGNORECASE) and \
+                                   re.search('.*--call-summits.*',command_check[0],re.IGNORECASE)):
+                  raise ValueError('MACS2 result comparison')
+
       def compare (control_item, check_item):
-          if not os.path.isfile(control_item): raise ValueError("missing file   {0}".format(control_item))
-          if not os.path.isfile(check_item): raise ValueError("missing file   {0}".format(check_item))
-          if magic.from_file(control_item, mime=True) == 'text/plain' and magic.from_file(check_item, mime=True) == 'text/plain':
+          if 'peaks.xls' in os.path.basename(check_item):
+              eval_macs2_results(check_item)
+          elif magic.from_file(control_item, mime=True) == 'text/plain' and magic.from_file(check_item, mime=True) == 'text/plain':
               sub.check_output('diff -I "#.*" -B -q ' + value + ' ' + check_dict[key], shell=True)
           elif os.path.getsize(control_item) != os.path.getsize(check_item):
               raise ValueError('size comparison')
@@ -53,29 +69,23 @@ inputs:
       conf =  '{ \
                     "overall": "true", \
                     "steps": { \
-                      "fastx_quality_stats": ["true",            ["SRR1198790.fastq.fastxstat"]], \
-                      "bowtie_aligner": ["true",                 ["SRR1198790.sam.log", \
+                      "fastx_quality_stats": ["true",            [ "SRR1198790.fastq.fastxstat"]], \
+                      "bowtie_aligner": ["true",                 [ "SRR1198790.sam.log", \
                                                                    "SRR1198790.sorted.bam", \
                                                                    "SRR1198790.sam.stat"]], \
-                      "samtools_sort_index": ["true",            ["SRR1198790.sorted.bam", \
+                      "samtools_sort_index": ["true",            [ "SRR1198790.sorted.bam", \
                                                                    "SRR1198790.sorted.bam.bai", \
                                                                    "SRR1198790.sam.stat"]], \
-                      "samtools_rmdup": ["true",                 ["SRR1198790.sorted.bam", \
+                      "samtools_rmdup": ["true",                 [ "SRR1198790.sorted.bam", \
                                                                    "SRR1198790.sorted.bam.bai", \
                                                                    "SRR1198790.sam.stat"]], \
-                      "samtools_sort_index_after_rmdup": ["true",["SRR1198790.sorted.bam", \
+                      "samtools_sort_index_after_rmdup": ["true",[ "SRR1198790.sorted.bam", \
                                                                    "SRR1198790.sorted.bam.bai"]], \
-                      "macs2_callpeak": ["true",                 ["SRR1198790.sorted_model.r", \
-                                                                   "SRR1198790.sorted_peaks.narrowPeak", \
-                                                                   "SRR1198790.sorted_peaks.xls", \
-                                                                   "SRR1198790.sorted_summits.bed"]], \
-                      "macs_island_count": ["true",              ["SRR1198790.sorted_peaks.xls"]], \
-                      "macs2_callpeak_forced": ["true",          ["SRR1198790.sorted_model.r", \
-                                                                   "SRR1198790.sorted_peaks.narrowPeak", \
-                                                                   "SRR1198790.sorted_peaks.xls", \
-                                                                   "SRR1198790.sorted_summits.bed"]], \
-                      "bamtools_stats": ["true",                 ["SRR1198790.sorted.sorted.bigwig"]], \
-                      "bam_to_bigwig": ["true",                  ["SRR1198790.sorted.sorted.bigwig"]] \
+                      "macs2_callpeak": ["true",                 [ "SRR1198790.sorted_peaks.xls"]], \
+                      "macs_island_count": ["true",              [ "SRR1198790.sorted_peaks.xls"]], \
+                      "macs2_callpeak_forced": ["true",          [ "SRR1198790.sorted_peaks.xls"]], \
+                      "bamtools_stats": ["true",                 [ "SRR1198790.sorted.sorted.bigwig"]], \
+                      "bam_to_bigwig": ["true",                  [ "SRR1198790.sorted.sorted.bigwig"]] \
                      } \
                  }'
 
