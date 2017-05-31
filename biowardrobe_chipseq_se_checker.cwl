@@ -4,7 +4,10 @@ cwlVersion: v1.0
 class: CommandLineTool
 
 requirements:
-- $import: ./tools/metadata/envvar-global.yml
+- class: EnvVarRequirement
+  envDef:
+  - envName: "PATH"
+    envValue: "/usr/local/bin/:/usr/bin:/bin"
 - class: ShellCommandRequirement
 - class: InlineJavascriptRequirement
 
