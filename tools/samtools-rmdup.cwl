@@ -46,6 +46,7 @@ inputs:
     default: true
     inputBinding:
       position: 2
+      valueFrom: $(self?'True':'False')
     doc: |
       If true - run samtools rmdup, if false - return input_file, previously staged into output directory
 

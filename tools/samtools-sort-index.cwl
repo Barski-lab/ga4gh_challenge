@@ -164,7 +164,7 @@ baseCommand: [bash, '-c']
 
 arguments:
 #   run script sort position 5
-  - valueFrom: $(inputs.trigger)
+  - valueFrom: $(inputs.trigger?'True':'False')
     position: 6
   # -l - position 11
   # -o sort_output_filename - position 12
@@ -185,7 +185,7 @@ arguments:
   - valueFrom: "-c"
     position: 19
 #   run script index position 20
-  - valueFrom: $(inputs.trigger)
+  - valueFrom: $(inputs.trigger?'True':'False')
     position: 21
   - valueFrom: $(inputs.bai?'-b':inputs.csi?'-c':[])
     position: 23

@@ -81,6 +81,7 @@ inputs:
     default: true
     inputBinding:
       position: 2
+      valueFrom: $(self?'True':'False')
     doc: |
       If true - run MACS2, if false - return staged files
 
@@ -156,7 +157,7 @@ inputs:
     doc: |
       The control or mock data file. Please follow the same direction as for -t/–treatment.
 
-  format:
+  format_mode:
     type:
       - "null"
       - string
