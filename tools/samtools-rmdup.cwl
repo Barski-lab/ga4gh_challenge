@@ -31,7 +31,6 @@ inputs:
       #!/bin/bash
       if [ "$0" = True ]
       then
-        echo "Run: samtools rmdup " ${@:1}
         samtools rmdup "${@:1}"
       else
         echo "Skip samtools rmdup " ${@:1}
