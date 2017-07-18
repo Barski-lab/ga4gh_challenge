@@ -7,7 +7,7 @@
   "exp_fragment_size": 150,
   "force_fragment_size": false,
   "broad_peak": false,
-  "threads": 16,
+  "threads": 8,
   "chrom_length": {"class": "File", "location": "./references/dm3/chrNameLength.txt", "format": "http://edamontology.org/format_2330"},
   "genome_size": "1.2e8"
 }
