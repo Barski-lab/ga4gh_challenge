@@ -4,7 +4,7 @@
     "path": ".synapseConfig"
   },
   "team_name": "",
-  "eval_id": "",
+  "eval_id": "9604287",
   "file": [
     {"class": "File", "path": "SRR1198790.fastq.fastxstat"},
     {"class": "File", "path": "SRR1198790.sam.log"},
