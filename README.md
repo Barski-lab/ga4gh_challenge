@@ -5,3 +5,15 @@ This workflow is a CWL version of a Python pipeline from BioWardrobe (Kartashov 
 This workflow (v0.0.2) is being used for GA4GH/DREAM challenge (phase 2).
 
 The pipeline scheme is available in the Wiki.
+
+To download workflow with testing input data use
+```
+git clone --recursive https://github.com/Barski-lab/ga4gh_challenge.git
+```
+It will clone submodule [ga4gh_challenge_data](https://github.com/michael-kotliar/ga4gh_challenge_data)
+into `data`folder.
+Uncompress input FASTQ file using
+```
+cd ga4gh_challenge/data
+./prepare_inputs.sh
+```
