@@ -156,7 +156,7 @@ outputs:
           if (inputs.sort_input.secondaryFiles && inputs.trigger == false){
             return inputs.sort_input.secondaryFiles;
           } else {
-            return self.location + ext();
+            return self.basename+ext();
           }
         }
 
