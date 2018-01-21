@@ -1,8 +1,0 @@
-{
-    "config_file": {
-        "class": "File",
-        "path": ".synapseConfig"
-    },
-    "synapse_id": "syn9772359",
-    "recursive": true
-}

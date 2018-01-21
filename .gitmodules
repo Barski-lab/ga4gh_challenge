@@ -1,0 +1,4 @@
+[submodule "data"]
+	path = data
+	url = https://github.com/michael-kotliar/ga4gh_challenge_data
+	branch = master
