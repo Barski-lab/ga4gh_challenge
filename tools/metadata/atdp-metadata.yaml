@@ -1,0 +1,33 @@
+class: s:SoftwareSourceCode
+s:name: "atdp"
+s:about: >
+  Based on BioWardrobe atdp (https://github.com/cincinnati-childrens-hospital/biowardrobe/tree/master/src/atdp)
+  The software is used to calculate average tag density profile around all annotated TSS. Such data can be used
+  to estimate the success of ChIP-Seq type experiments for some histone modifications (e.g. H3K4me)
+
+s:url: https://github.com/Barski-lab/atdp/blob/master/README.md
+s:codeRepository: https://github.com/Barski-lab/atdp
+
+s:license:
+- https://opensource.org/licenses/MIT
+
+s:targetProduct:
+  class: s:SoftwareApplication
+  s:softwareVersion: "0.0.1"
+  s:applicationCategory: "command line tool"
+
+s:programmingLanguage: "C++"
+
+s:discussionUrl:
+- https://github.com/Barski-lab/atdp/issues
+
+s:creator:
+- class: s:Organization
+  s:name: "Barski Research Lab"
+  s:member:
+  - class: s:Person
+    s:name: "Andrey Kartashov"
+    s:description: "Main author"
+  - class: s:Person
+    s:name: "Michael Kotliar"
+    s:description: "Update to work with files instead of DB"

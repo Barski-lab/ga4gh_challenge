@@ -8,157 +8,94 @@ requirements:
 - class: ShellCommandRequirement
 - class: InlineJavascriptRequirement
   expressionLib:
-  - var default_name = function(input_staged, sufix) {
-      input_staged = input_staged || false;
-      sufix = sufix || "";
-      if (inputs.trigger == false && input_staged){
-        return input_staged.basename;
+  - var default_output_filename = function(sufix) {
+      sufix = sufix || "_macs";
+      if (Object.prototype.toString.call(inputs.treatment_file) === '[object Array]'){
+        let basename = inputs.treatment_file[0].basename;
+        let root = basename.split('.').slice(0,-1).join('.');
+        return (root == "")?basename+sufix:root+sufix;
       } else {
-        if (Object.prototype.toString.call(inputs.treatment) === '[object Array]'){
-          return inputs.treatment[0].location.split('/').slice(-1)[0].split('.').slice(0,-1).join('.')+sufix;
-        } else {
-          return inputs.treatment.location.split('/').slice(-1)[0].split('.').slice(0,-1).join('.')+sufix;
-        }
+        let basename = inputs.treatment_file.basename;
+        let root = basename.split('.').slice(0,-1).join('.');
+        return (root == "")?basename+sufix:root+sufix;
       }
     }
-
 - class: InitialWorkDirRequirement
-  listing: |
-    ${
-      var listing = []
-      if (inputs.peak_xls_file_staged){
-        listing.push(
-          {
-            "entry": inputs.peak_xls_file_staged,
-            "entryname": inputs.peak_xls_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      if (inputs.narrow_peak_file_staged){
-        listing.push(
-          {
-            "entry": inputs.narrow_peak_file_staged,
-            "entryname": inputs.narrow_peak_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      if (inputs.broad_peak_file_staged){
-        listing.push(
-          {
-            "entry": inputs.broad_peak_file_staged,
-            "entryname": inputs.broad_peak_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      if (inputs.gapped_peak_file_staged){
-        listing.push(
-          {
-            "entry": inputs.gapped_peak_file_staged,
-            "entryname": inputs.gapped_peak_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      if (inputs.peak_summits_file_staged){
-        listing.push(
-          {
-            "entry": inputs.peak_summits_file_staged,
-            "entryname": inputs.peak_summits_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      if (inputs.moder_r_file_staged){
-        listing.push(
-          {
-            "entry": inputs.moder_r_file_staged,
-            "entryname": inputs.moder_r_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      if (inputs.treat_pileup_bdg_file_staged){
-        listing.push(
-          {
-            "entry": inputs.treat_pileup_bdg_file_staged,
-            "entryname": inputs.treat_pileup_bdg_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      if (inputs.control_lambda_bdg_file_staged){
-        listing.push(
-          {
-            "entry": inputs.control_lambda_bdg_file_staged,
-            "entryname": inputs.control_lambda_bdg_file_staged.basename,
-            "writable": true
-          }
-        )
-      }
-      return listing;
-    }
+  listing:
+    - entryname: run.py
+      entry: |
+          #!/usr/bin/env python
+          import subprocess
+          import sys
+          import argparse
+          import re
+
+          def arg_parser():
+              """Returns argument parser. used only to get -n and --extsize values"""
+              parser = argparse.ArgumentParser(description='MACS2 Biowardrobe parser')
+              parser.add_argument("-n", help="MACS2 string name of the experiment")
+              parser.add_argument("--extsize", help="MACS2 arbitrary extension size in bp")
+              return parser
+
+          def get_info (name):
+              fragments, islands = 0, 0
+              with open(name+'_peaks.xls', 'r') as infile:
+                  for line in infile:
+                      if re.match('^# d = ', line):
+                          fragments = int(line.split('d = ')[1])
+                          continue
+                      if re.match('^#', line):
+                          continue
+                      if line.strip() != "":
+                          islands = islands + 1
+              islands = islands - 1
+              return fragments, islands
+
+          args, _ = arg_parser().parse_known_args()
+          argv=' '.join(sys.argv[1:])
+
+          extsize=args.extsize
+          name=args.n
+
+          runtime_error=False
+          calculated_fragment_size=0
+          expected_fragment_size=0
+          island_count=0
+
+          try:
+              subprocess.check_output(argv, shell=True)
+          except subprocess.CalledProcessError as e:
+              if '--nomodel' in argv:
+                  print "MACS2 critical error: ", str(e)
+                  sys.exit(1) # stop the whole workflow
+              print "MACS2 will be rerun to fix not critical error: ", str(e)
+              runtime_error=True
+              expected_fragment_size=extsize
+          else:
+              calculated_fragment_size,island_count=get_info(name)
+              expected_fragment_size=calculated_fragment_size
+
+          if runtime_error or (calculated_fragment_size < 80 and ('--nomodel' not in argv)):
+              try:
+                  subprocess.check_output(argv+' --nomodel', shell=True)
+              except subprocess.CalledProcessError as e:
+                  print "MACS2 forced error: ", str(e)
+                  sys.exit(1) # stop the whole workflow
+              else:
+                  calculated_fragment_size,island_count=get_info(name)
+
+          with open(name.replace('_macs','')+'_fragment_stat.tsv', 'w') as output_file:
+              output_file.write(' '.join([str(calculated_fragment_size),str(expected_fragment_size),str(island_count)]))
+
 
 hints:
 - class: DockerRequirement
   dockerPull: biowardrobe2/macs2:v2.1.1
 
+
 inputs:
 
-  script:
-    type: string?
-    default: |
-      #!/bin/bash
-      if [ "$0" = True ]
-      then
-        echo "Run: macs2 callpeak " ${@:1}
-        ls | grep -v ${@: -1}.log | xargs rm
-        macs2 callpeak "${@:1}"
-      else
-        echo "Skip macs2 callpeak " ${@:1}
-      fi
-    inputBinding:
-      position: 1
-    doc: |
-      Bash function to run MACS2 callpeak with all input parameters or skip it if trigger is false
-
-  trigger:
-    type: boolean?
-    default: true
-    inputBinding:
-      position: 2
-      valueFrom: $(self?'True':'False')
-    doc: |
-      If true - run MACS2, if false - return staged files
-
-  peak_xls_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-  narrow_peak_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-  broad_peak_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-  gapped_peak_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-  peak_summits_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-  moder_r_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-  treat_pileup_bdg_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-  control_lambda_bdg_file_staged:
-    type: File?
-    doc: For staging in a case of trigger is set to false
-
-  treatment:
+  treatment_file:
     type:
       - File
       - type: array
@@ -171,7 +108,7 @@ inputs:
       Check –format for detail. If you have more than one alignment files, you can specify them as `-t A B C`.
       MACS will pool up all these files together.
 
-  name:
+  output_prefix:
     type:
       - "null"
       - string
@@ -180,8 +117,8 @@ inputs:
       prefix: -n
       valueFrom: |
         ${
-            if (self == null || inputs.trigger == false){
-              return default_name();
+            if (self == null){
+              return default_output_filename();
             } else {
               return self;
             }
@@ -193,7 +130,7 @@ inputs:
       So please avoid any confliction between these filenames and your existing files.
       DEFAULT: generated on the base of the treatment input
 
-  control:
+  control_file:
     type:
       - "null"
       - File
@@ -348,10 +285,6 @@ inputs:
     inputBinding:
       position: 22
       prefix: -m
-      valueFrom: |
-        ${
-          return self.replace(/\s+/g, ' ').split(' ');
-        }
     doc: |
       Select the regions within MFOLD range of high-
       confidence enrichment ratio against background to
@@ -405,9 +338,7 @@ inputs:
       DEFAULT: 0
 
   extsize:
-    type:
-      - "null"
-      - int
+    type: int
     inputBinding:
       position: 26
       prefix: --extsize
@@ -602,7 +533,7 @@ inputs:
       find subpeak summits in each enriched peak region.
       DEFAULT: False
 
-  fe-cutoff:
+  fe_cutoff:
     type:
       - "null"
       - float
@@ -631,10 +562,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.peak_xls_file_staged, '_peaks.xls');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_peaks.xls');
             } else {
-              return inputs.name + '_peaks.xls';
+              return inputs.output_prefix + '_peaks.xls';
             }
         }
 
@@ -643,10 +574,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.narrow_peak_file_staged, '_peaks.narrowPeak');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_peaks.narrowPeak');
             } else {
-              return inputs.name + '_peaks.narrowPeak';
+              return inputs.output_prefix + '_peaks.narrowPeak';
             }
         }
 
@@ -655,10 +586,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.broad_peak_file_staged, '_peaks.broadPeak');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_peaks.broadPeak');
             } else {
-              return inputs.name + '_peaks.broadPeak';
+              return inputs.output_prefix + '_peaks.broadPeak';
             }
         }
 
@@ -667,10 +598,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.gapped_peak_file_staged, '_peaks.gappedPeak');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_peaks.gappedPeak');
             } else {
-              return inputs.name + '_peaks.gappedPeak';
+              return inputs.output_prefix + '_peaks.gappedPeak';
             }
         }
 
@@ -679,10 +610,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.peak_summits_file_staged, '_summits.bed');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_summits.bed');
             } else {
-              return inputs.name + '_summits.bed';
+              return inputs.output_prefix + '_summits.bed';
             }
         }
 
@@ -691,10 +622,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.moder_r_file_staged, '_model.r');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_model.r');
             } else {
-              return inputs.name + '_model.r';
+              return inputs.output_prefix + '_model.r';
             }
         }
 
@@ -703,10 +634,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.treat_pileup_bdg_file_staged, '_treat_pileup.bdg');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_treat_pileup.bdg');
             } else {
-              return inputs.name + '_treat_pileup.bdg';
+              return inputs.output_prefix + '_treat_pileup.bdg';
             }
         }
 
@@ -715,10 +646,10 @@ outputs:
     outputBinding:
       glob:
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(inputs.control_lambda_bdg_file_staged, '_control_lambda.bdg');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs_control_lambda.bdg');
             } else {
-              return inputs.name + '_control_lambda.bdg';
+              return inputs.output_prefix + '_control_lambda.bdg';
             }
         }
 
@@ -727,26 +658,83 @@ outputs:
     outputBinding:
       glob: |
         ${
-            if (inputs.name == null || inputs.trigger == false){
-              return default_name(null, '.log');
+            if (inputs.output_prefix == null){
+              return default_output_filename('_macs.log');
             } else {
-              return inputs.name + '.log';
+              return inputs.output_prefix + '.log';
             }
         }
 
-baseCommand: [bash, '-c']
+  macs2_stat_file:
+    type: File
+    outputBinding:
+      glob: |
+        ${
+            if (inputs.output_prefix == null){
+              return default_output_filename('_fragment_stat.tsv');
+            } else {
+              return inputs.output_prefix + '_fragment_stat.tsv';
+            }
+        }
+
+  macs2_fragments_calculated:
+    type: int
+    outputBinding:
+      loadContents: true
+      glob: |
+        ${
+            if (inputs.output_prefix == null){
+              return default_output_filename('_fragment_stat.tsv');
+            } else {
+              return inputs.output_prefix + '_fragment_stat.tsv';
+            }
+        }
+      outputEval: $(parseInt(self[0].contents.split(' ')[0]))
+
+  macs2_fragments_expected:
+    type: int
+    outputBinding:
+      loadContents: true
+      glob: |
+        ${
+            if (inputs.output_prefix == null){
+              return default_output_filename('_fragment_stat.tsv');
+            } else {
+              return inputs.output_prefix + '_fragment_stat.tsv';
+            }
+        }
+      outputEval: $(parseInt(self[0].contents.split(' ')[1]))
+
+  macs2_islands:
+    type: int
+    outputBinding:
+      loadContents: true
+      glob: |
+        ${
+            if (inputs.output_prefix == null){
+              return default_output_filename('_fragment_stat.tsv');
+            } else {
+              return inputs.output_prefix + '_fragment_stat.tsv';
+            }
+        }
+      outputEval: $(parseInt(self[0].contents.split(' ')[2]))
+
+
+
+
+baseCommand: [python, 'run.py', 'macs2 callpeak']
 
 arguments:
   - valueFrom:
       ${
-          if (inputs.name == null || inputs.trigger == false ){
-            return ' 2> ' + default_name(null, '.log');
+          if (inputs.output_prefix == null){
+            return ' 2> ' + default_output_filename('_macs.log');
           } else {
-            return ' 2> ' + inputs.name + '.log';
+            return ' 2> ' + inputs.output_prefix + '.log';
           }
       }
     position: 100000
-    shellQuote: false
+    shellQuote: true
 
 $namespaces:
   s: http://schema.org/
@@ -758,8 +746,8 @@ s:mainEntity:
   $import: ./metadata/macs2-metadata.yaml
 
 s:name: "macs2-callpeak"
-s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/tools/macs2-callpeak.cwl
-s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
+s:downloadUrl: https://raw.githubusercontent.com/Barski-lab/workflows/master/tools/macs2-callpeak.cwl
+s:codeRepository: https://github.com/Barski-lab/workflows
 s:license: http://www.apache.org/licenses/LICENSE-2.0
 
 s:isPartOf:
@@ -788,25 +776,78 @@ s:creator:
       s:member:
       - class: s:Person
         s:name: Michael Kotliar
-        s:email: mailto:michael.kotliar@cchmc.org
+        s:email: mailto:misha.kotliar@gmail.com
         s:sameAs:
         - id: http://orcid.org/0000-0002-6486-3898
 
 doc: |
-  Tool is used to perform peak calling using MACS2.
-  Input Trigger (default: true) allows to skip all calculation and return
-  all input files unchanged. To set files to be returned in case of Trigger == false,
-  use the following inputs:
-    peak_xls_file_staged:
-    narrow_peak_file_staged:
-    broad_peak_file_staged:
-    gapped_peak_file_staged:
-    peak_summits_file_staged:
-    moder_r_file_staged:
-    treat_pileup_bdg_file_staged:
-    control_lambda_bdg_file_staged:
+  Tool runs peak calling using MACS2 within the custom script `run.py`
 
-s:about: >
+  `default_output_filename` function returns default output prefix for all generated output files. Function is called
+  when `output_prefix` input is not set. Optional argument `sufix` is equal to `_macs2` by default.
+  `sufix` is hardcoded and should not be changed (if necessary, update `_macs2` in all tool outputs and
+  `run.py` script too). `sufix` is included in the filenames of all output files except those, who ends
+  with `_fragment_stat.tsv`. For the rest of the output files `_macs2` is already included as a part of the
+  `sufix` argument when `default_output_filename` function is called. This is mostly done because of the
+  naming conventions for output files in supplemental project `https://github.com/Barski-lab/biowardrobe-analysis`
+  (if `_fragment_stat.tsv` is updated to `_macs2_fragment_stat.tsv` in `biowardrobe-analysis`, the way we use
+  `default_output_filename` function can be simplified). The basename for output filename is taken from
+  `treatment_file` input (if array - the first item is used).
+
+  `baseCommand` runs Python script `run.py` staged into the output directory. Within this script MACS2 is called one
+  ortwo times as a subprocess with all provided input parameters.
+
+  `extsize` is mandatory parameter. It will be ignored by MASC2, when `--nomodel` is not set.
+
+  The aim of `run.py` script is to return `calculated_fragment_size`, `expected_fragment_size` and `island_count` as
+  a text file.
+
+  Scenarios:
+  1. Run MACS2 with all input parameters.
+     If MACS2 first run failed and `--nomodel` wasn't set (it means that `--extsize` wasn't used), set
+     `expected_fragment_size` to `--extsize` value and try to rerun MACS2 with `--nomodel` parameter. If MACS2 second
+     run failed too - exit workflow, if it didn't fail - get values for `calculated_fragment_size` and `island_count`
+     from generated output file.
+     Returned data:
+      `calculated_fragment_size` - the value of fragment size from MACS2 second run
+      `expected_fragment_size` - the value of fragment size equal to `--extsize` (set when MACS2 first run failed)
+      `island_count` - the number of islands from MACS2 second run
+
+  2. Run MACS2 with all input parameters.
+     If MACS2 first run failed and `--nomodel` was already set, exit workflow, because there is no need to rerun
+     MACS2, it will fail too.
+
+  3. Run MACS2 with all input parameters.
+     If MACS2 first run didn't fail, we get `calculated_fragment_size` and `island_count` from generated output file,
+     and set `expected_fragment_size` to be equal to `calculated_fragment_size`. If `calculated_fragment_size` is
+     bigger or equal to 80, there is no need to rerun MACS2.
+     Returned data:
+      `calculated_fragment_size` - the value of fragment size from MACS2 first run
+      `expected_fragment_size` - the value of fragment size equal to `calculated_fragment_size`
+      `island_count` - the number of islands from MACS2 first run
+
+  4. Run MACS2 with all input parameters.
+     If MACS2 first run didn't fail, we get `calculated_fragment_size` and `island_count` from generated output file,
+     and set `expected_fragment_size` to be equal to `calculated_fragment_size`. If `calculated_fragment_size` is less
+     then 80 and MACS2 was run without '--nomodel' (it means we didn't force it to use the fixed fragment size
+     `--extsize`), we rerun MACS2 with `--nomodel` argument. If MACS2 second run failed too - exit workflow, if not -
+     get values for `calculated_fragment_size` and `island_count` from generated output file.
+     Returned data:
+      `calculated_fragment_size` - the value of fragment size from MACS2 second run
+      `expected_fragment_size` - the value of fragment size from MACS2 first run
+      `island_count` - the number of islands from MACS2 second run
+
+  5. Run MACS2 with all input parameters.
+     If MACS2 first run didn't fail and was already run with '--nomodel' parameter (forced to use fixed fragment size
+     `--extsize`), we get `calculated_fragment_size` and `island_count` from generated output file, and set
+     `expected_fragment_size` to be equal to `calculated_fragment_size`. No mater which value we got for
+     `calculated_fragment_size`, we don't rerun MACS2.
+     Returned data:
+      `calculated_fragment_size` - the value of fragment size got from MACS2 first run
+      `expected_fragment_size` - the value of fragment size equal to `calculated_fragment_size`
+      `island_count` - the number of islands got from MACS2 first run of MACS2
+
+s:about: |
   usage: macs2 callpeak [-h] -t TFILE [TFILE ...] [-c [CFILE [CFILE ...]]]
                         [-f {AUTO,BAM,SAM,BED,ELAND,ELANDMULTI,ELANDEXPORT,BOWTIE,BAMPE,BEDPE}]
                         [-g GSIZE] [--keep-dup KEEPDUPLICATES]
