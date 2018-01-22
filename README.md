@@ -17,3 +17,4 @@ Uncompress input FASTQ file using
 cd ga4gh_challenge/data
 ./prepare_inputs.sh
 ```
+> tested with cwltool==1.0.20180116213856
