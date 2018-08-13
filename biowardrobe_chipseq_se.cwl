@@ -4,8 +4,10 @@ class: Workflow
 
 requirements:
   - class: SubworkflowFeatureRequirement
+  - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: InlineJavascriptRequirement
+  - class: MultipleInputFeatureRequirement
 
 
 inputs:
@@ -85,7 +87,6 @@ inputs:
     default: 2
     doc: "Number of threads for those steps that support multithreading"
     label: "Number of threads"
-
 
 outputs:
 
@@ -215,30 +216,24 @@ outputs:
     doc: "fragment, calculated fragment, islands count from MACS2 results"
     outputSource: macs2_callpeak/macs2_stat_file
 
-  fastq_compressed:
-    type: File
-    label: "Compressed FASTQ"
-    doc: "bz2 compressed FASTQ file"
-    outputSource: bzip/output_file
-
 steps:
+
+  extract_fastq:
+    run: ./tools/extract-fastq.cwl
+    in:
+      compressed_file: fastq_file
+    out: [fastq_file]
 
   fastx_quality_stats:
     run: ./tools/fastx-quality-stats.cwl
     in:
-      input_file: fastq_file
+      input_file: extract_fastq/fastq_file
     out: [statistics_file]
-
-  bzip:
-    run: ./tools/bzip2-compress.cwl
-    in:
-      input_file: fastq_file
-    out: [output_file]
 
   bowtie_aligner:
     run: ./tools/bowtie-alignreads.cwl
     in:
-      upstream_filelist: fastq_file
+      upstream_filelist: extract_fastq/fastq_file
       indices_folder: indices_folder
       clip_3p_end: clip_3p_end
       clip_5p_end: clip_5p_end
@@ -323,7 +318,7 @@ steps:
       - macs2_fragments_calculated
 
   bam_to_bigwig:
-    run: ./workflows/bam-bedgraph-bigwig.cwl
+    run: ./subworkflows/bam-bedgraph-bigwig.cwl
     in:
       bam_file: samtools_sort_index_after_rmdup/bam_bai_pair
       chrom_length_file: chrom_length
@@ -411,33 +406,17 @@ s:creator:
         - id: http://orcid.org/0000-0002-6486-3898
 
 doc: |
-  Current workflow is used to run CHIP-Seq basic analysis with single-end input FASTQ file.
+  The workflow is used to run CHIP-Seq basic analysis with single-end input FASTQ file.
   In outputs it returns coordinate sorted BAM file alongside with index BAI file, quality
-  statistics of the input FASTQ file, reads coverage in a form of BigWig file, peaks calling
+  statistics of the input FASTQ file, reads coverage in a form of bigWig file, peaks calling
   data in a form of narrowPeak or broadPeak files.
 
 s:about: |
-  Current workflow is used to run CHIP-Seq basic analysis with single-end input FASTQ file.
-  In outputs it returns coordinate sorted BAM file alongside with index BAI file, quality
-  statistics of the input FASTQ file, reads coverage in a form of BigWig file, peaks calling
-  data in a form of narrowPeak or broadPeak files.
-  Workflow starts with running fastx_quality_stats (Step fastx_quality_stats) from FASTX-Toolkit
-  to calculate quality statistics for input FASTQ file. At the same time (Step bowtie_aligner)
-  Bowtie is used to align reads from input FASTQ file to reference genome. The output of this step
-  is unsorted SAM file which is being sorted and indexed by samtools sort and samtools index
-  (Step samtools_sort_index). Depending on workflow’s input parameters indexed the sorted BAM file
-  could be processed by samtools rmdup (Step samtools_rmdup) to remove all possible read duplicates.
-  In a case when removing duplicates is not necessary the step returns original input BAM and BAI
-  files without any processing. If the duplicates were removed the following step
-  (Step samtools_sort_index_after_rmdup) reruns samtools sort and samtools index with BAM and BAI files,
-  if not - the step returns original unchanged input files. Right after that (Step macs2_callpeak)
-  macs2 callpeak performs peak calling. This step also calculates the number of islands and estimated
-  fragment size. If the last one is less that 80 (hardcoded in a workflow) macs2 callpeak is rerun again
-  with forced fixed fragment size value. If at the very beginning it was set in workflow
-  input parameters to run peak calling with fixed fragment size, macs2 peak calling is run only once.
-  The following step (Step bam_to_bigwig) is used to calculate read coverage on the base of input BAM file
-  and save it in bigWig format. For that purpose the mapped reads number is used as a scaling factor
-  by bedtools genomecov when it performs coverage calculation and saves it in BED format. The last one
-  is then being sorted and converted to bigWig format by bedGraphToBigWig tool from UCSC utilities.
-  The following two steps (Step island_intersect and average_tag_density) define the closest genes to
-  the islands received from macs2 peak calling and calculate average tag density.
+  The workflow is a CWL version of a Python pipeline from BioWardrobe (Kartashov and Barski, 2015).
+  It starts by extracting input FASTQ file (in case it was compressed). Next step runs BowTie
+  (Langmead et al., 2009) to perform alignment to a reference genome, resulting in an unsorted SAM file.
+  The SAM file is then sorted and indexed with samtools (Li et al., 2009) to obtain a BAM file and a BAI index.
+  Next MACS2 (Zhang et al., 2008) is used to call peaks and to estimate fragment size. In the last few steps,
+  the coverage by estimated fragments is calculated from the BAM file and is reported in bigWig format. The pipeline
+  also reports statistics, such as read quality, peak number and base frequency, and other troubleshooting information
+  using tools such as fastx-toolkit and bamtools.

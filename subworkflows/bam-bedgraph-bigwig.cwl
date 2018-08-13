@@ -1,5 +1,3 @@
-#!/usr/bin/env cwl-runner
-
 cwlVersion: v1.0
 class: Workflow
 
@@ -88,14 +86,7 @@ steps:
         default: "-bg"
       split:
         source: split
-        valueFrom: |
-          ${
-            if (self == null){
-              return true;
-            } else {
-              return self;
-            }
-          }
+        default: true
       output_filename: bedgraph_filename
       pairchip: pairchip
       fragment_size: fragment_size
@@ -120,70 +111,3 @@ steps:
       chrom_length_file: chrom_length_file
       output_filename: bigwig_filename
     out: [bigwig_file]
-
-$namespaces:
-  s: http://schema.org/
-
-$schemas:
-- http://schema.org/docs/schema_org_rdfa.html
-
-s:name: "bam-bedgraph-bigwig"
-s:downloadUrl: hhttps://raw.githubusercontent.com/Barski-lab/ga4gh_challenge/master/workflows/bam-bedgraph-bigwig.cwl
-s:codeRepository: https://github.com/Barski-lab/ga4gh_challenge
-s:license: http://www.apache.org/licenses/LICENSE-2.0
-
-s:isPartOf:
-  class: s:CreativeWork
-  s:name: Common Workflow Language
-  s:url: http://commonwl.org/
-
-s:creator:
-- class: s:Organization
-  s:legalName: "Cincinnati Children's Hospital Medical Center"
-  s:location:
-  - class: s:PostalAddress
-    s:addressCountry: "USA"
-    s:addressLocality: "Cincinnati"
-    s:addressRegion: "OH"
-    s:postalCode: "45229"
-    s:streetAddress: "3333 Burnet Ave"
-    s:telephone: "+1(513)636-4200"
-  s:logo: "https://www.cincinnatichildrens.org/-/media/cincinnati%20childrens/global%20shared/childrens-logo-new.png"
-  s:department:
-  - class: s:Organization
-    s:legalName: "Allergy and Immunology"
-    s:department:
-    - class: s:Organization
-      s:legalName: "Barski Research Lab"
-      s:member:
-      - class: s:Person
-        s:name: Michael Kotliar
-        s:email: mailto:misha.kotliar@gmail.com
-        s:sameAs:
-        - id: http://orcid.org/0000-0002-6486-3898
-      - class: s:Person
-        s:name: Andrey Kartashov
-        s:email: mailto:Andrey.Kartashov@cchmc.org
-        s:sameAs:
-        - id: http://orcid.org/0000-0001-9102-5681
-
-doc: |
-  Workflow converts input BAM file into bigWig and bedGraph files
-
-s:about: |
-  Workflow converts input BAM file into bigWig and bedGraph files.
-
-  Input BAM file should be sorted by coordinates (required by `bam_to_bedgraph` step).
-
-  If `split` input is not provided use true by default. Default logic is implemented in `valueFrom` field of `split`
-  input inside `bam_to_bedgraph` step to avoid possible bug in cwltool with setting default values for workflow inputs.
-
-  `scale` has higher priority over the `mapped_reads_number`. The last one is used to calculate `-scale` parameter for
-  `bedtools genomecov` (step `bam_to_bedgraph`) only in a case when input `scale` is not provided. All logic is
-  implemented inside `bedtools-genomecov.cwl`.
-
-  `bigwig_filename` defines the output name only for generated bigWig file. `bedgraph_filename` defines the output name
-  for generated bedGraph file and can influence on generated bigWig filename in case when `bigwig_filename` is not provided.
-
-  All workflow inputs and outputs don't have `format` field to avoid format incompatibility errors when workflow is used
-  as subworkflow.

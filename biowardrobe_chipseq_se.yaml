@@ -19,5 +19,5 @@ remove_duplicates: false
 exp_fragment_size: 150
 force_fragment_size: false
 broad_peak: false
-threads: 8
+threads: 2
 genome_size: "1.2e8"
