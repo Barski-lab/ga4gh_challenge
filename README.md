@@ -20,8 +20,7 @@ ___
 **To download workflow with the testing input data run the following command**
 ```
 git clone --recursive https://github.com/Barski-lab/ga4gh_challenge.git
-cd ga4gh_challenge/data
-./prepare_inputs.sh
+./ga4gh_challenge/data/prepare_inputs.sh
 ```
 *--recursive* - fetches the submodule [ga4gh_challenge_data](https://github.com/michael-kotliar/ga4gh_challenge_data)
 (please, be patient, download time depends on your Internet connection bandwidth)
