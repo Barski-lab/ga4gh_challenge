@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/90777848.svg)](https://zenodo.org/badge/latestdoi/90777848)
+
 # ChIP-Seq-SE CWL pipeline from BioWardrobe 
 
 This workflow is a CWL version of a Python pipeline from BioWardrobe (Kartashov and Barski, 2015).
